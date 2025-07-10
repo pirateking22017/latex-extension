@@ -1,0 +1,129 @@
+{
+  "name": "latex-resume-builder",
+  "displayName": "LaTeX Resume Builder",
+  "description": "Build and preview LaTeX resumes with one click",
+  "version": "0.0.1",
+  "engines": {
+    "vscode": "^1.74.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [
+    "onLanguage:latex",
+    "onCommand:resume-builder.compile",
+    "onCommand:resume-builder.quickPreview",
+    "onCommand:resume-builder.insertTemplate",
+    "onCommand:resume-builder.openPDF",
+    "onCommand:resume-builder.showInstallGuide",
+    "workspaceContains:**/*.tex"
+  ],
+  "main": "./dist/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "resume-builder.compile",
+        "title": "Build Resume PDF",
+        "icon": "$(file-pdf)"
+      },
+      {
+        "command": "resume-builder.quickPreview",
+        "title": "Quick Preview Resume",
+        "icon": "$(preview)"
+      },
+      {
+        "command": "resume-builder.insertTemplate",
+        "title": "Insert Resume Section Template"
+      },
+      {
+        "command": "resume-builder.openPDF",
+        "title": "Open Resume PDF"
+      },
+      {
+        "command": "resume-builder.showInstallGuide",
+        "title": "LaTeX Installation Guide"
+      }
+    ],
+    "keybindings": [
+      {
+        "command": "resume-builder.compile",
+        "key": "ctrl+r",
+        "mac": "cmd+r",
+        "when": "editorTextFocus && resourceExtname == .tex"
+      },
+      {
+        "command": "resume-builder.quickPreview",
+        "key": "ctrl+shift+r",
+        "mac": "cmd+shift+r",
+        "when": "editorTextFocus && resourceExtname == .tex"
+      }
+    ],
+    "menus": {
+      "editor/context": [
+        {
+          "command": "resume-builder.compile",
+          "when": "resourceExtname == .tex",
+          "group": "navigation"
+        },
+        {
+          "command": "resume-builder.insertTemplate",
+          "when": "resourceExtname == .tex",
+          "group": "navigation"
+        }
+      ],
+      "editor/title": [
+        {
+          "command": "resume-builder.compile",
+          "when": "resourceExtname == .tex",
+          "group": "navigation"
+        }
+      ]
+    },
+    "configuration": {
+      "title": "Resume Builder",
+      "properties": {
+        "resumeBuilder.autoCompile": {
+          "type": "boolean",
+          "default": true,
+          "description": "Automatically compile resume when file changes"
+        },
+        "resumeBuilder.autoOpenPDF": {
+          "type": "boolean",
+          "default": true,
+          "description": "Automatically open PDF after compilation"
+        },
+        "resumeBuilder.compiler": {
+          "type": "string",
+          "default": "pdflatex",
+          "enum": ["pdflatex", "xelatex", "lualatex"],
+          "description": "LaTeX compiler to use"
+        }
+      }
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run package",
+    "compile": "webpack",
+    "watch": "webpack --watch",
+    "package": "webpack --mode production --devtool hidden-source-map",
+    "compile-tests": "tsc -p . --outDir out",
+    "watch-tests": "tsc -p . -w --outDir out",
+    "pretest": "npm run compile-tests && npm run compile && npm run lint",
+    "lint": "eslint src --ext ts",
+    "test": "node ./out/test/runTest.js"
+  },
+  "devDependencies": {
+    "@types/vscode": "^1.74.0",
+    "@types/node": "16.x",
+    "@typescript-eslint/eslint-plugin": "^5.45.0",
+    "@typescript-eslint/parser": "^5.45.0",
+    "eslint": "^8.28.0",
+    "typescript": "^4.9.4",
+    "webpack": "^5.75.0",
+    "webpack-cli": "^5.0.0",
+    "ts-loader": "^9.4.1"
+  },
+  "dependencies": {
+    "chokidar": "^3.5.3"
+  }
+}
